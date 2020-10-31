@@ -1,0 +1,22 @@
+{
+    "name": "useragent-plugin",
+    "version": "1.0.0",
+    "description": "Posthog hello world plugin. Use it as a base for your own plugins!",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "jest",
+        "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/jest": "^26.0.15",
+        "esbuild": "^0.8.0",
+        "esbuild-jest": "^0.3.0-beta.0",
+        "jest": "^26.6.1"
+    },
+    "dependencies": {
+        "detect-browser": "^5.2.0"
+    }
+}
