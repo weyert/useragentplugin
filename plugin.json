@@ -3,11 +3,10 @@
     "url": "https://github.com/weyert/useragent-plugin",
     "description": "Enhances events with user agent details",
     "main": "dist/index.js",
-    "lib": "dist/index.js",
     "config": {
         "overrideUserAgentDetails": {
             "name": "Can override existing browser related properties of event?",
-            "type": "boolean",
+            "type": "string",
             "default": "false",
             "required": false
         }

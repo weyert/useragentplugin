@@ -1,26 +1,28 @@
 import { detect } from 'detect-browser'
-
-export type PosthogEvent = {
-    properties: Record<string, string>
-}
+import { PluginEvent, PluginMeta, PluginConfigSchema } from '@posthog/plugin-scaffold'
 
 export type UserAgentPluginConfiguration = {
-    enable: boolean
-    overrideUserAgentDetails?: boolean
+    enable: string
+    overrideUserAgentDetails?: string
 }
 
-export type PluginConfiguration<T> = {
-    config: T
+export type PluginConfiguration = { config: UserAgentPluginConfiguration }
+
+export function setupPlugin({ attachments, global }) {
+    console.log('UserAgentPlugin.setupPlugin() global: ', global)
+    console.log('UserAgentPlugin.setupPlugin() attachments: ', attachments)
 }
 
 /**
  * Process the event
  */
-async function processEvent(event: PosthogEvent, { config }: PluginConfiguration<UserAgentPluginConfiguration>) {
-    const { enable = false, overrideUserAgentDetails = false } = config
+export async function processEvent(event: PluginEvent, meta: PluginMeta & PluginConfiguration) {
+    const enabledPlugin = meta.config.enable === 'true'
+    const overrideUserAgentDetails = meta.config.overrideUserAgentDetails === 'true'
 
     // If the plugin is not enable, we skip the processing of the event
-    if (!enable) {
+    if (!enabledPlugin) {
+        console.warn('The useragent-plugin is not enabed.')
         return event
     }
 
@@ -55,7 +57,6 @@ async function processEvent(event: PosthogEvent, { config }: PluginConfiguration
     event.properties['$os'] = agentInfo.os
     // Custom
     event.properties['$browser_type'] = agentInfo.type
+
     return event
 }
-
-export { processEvent }

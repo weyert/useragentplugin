@@ -1,8 +1,14 @@
 {
     "name": "useragent-plugin",
-    "version": "1.0.0",
-    "description": "Posthog hello world plugin. Use it as a base for your own plugins!",
-    "main": "src/index.js",
+    "version": "0.0.1",
+    "description": "Automatically attach detailed browser details to the event when $useragent property exists",
+    "main": "dist/index.js",
+    "files": [
+        "plugin.json",
+        "dist/indx.js",
+        "README.md",
+        "LICENSE.md"
+    ],
     "scripts": {
         "test": "jest",
         "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js"
@@ -11,10 +17,12 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@types/jest": "^26.0.15",
-        "esbuild": "^0.8.0",
-        "esbuild-jest": "^0.3.0-beta.0",
-        "jest": "^26.6.1"
+        "@posthog/plugin-scaffold": "^0.2.7",
+        "@types/jest": "^26.0.20",
+        "esbuild": "^0.8.32",
+        "esbuild-jest": "^0.3.0",
+        "jest": "^26.6.3",
+        "tslib": "^2.1.0"
     },
     "dependencies": {
         "detect-browser": "^5.2.0"
