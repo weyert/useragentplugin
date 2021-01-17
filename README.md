@@ -1,29 +1,14 @@
-# useragentplugin
+# User Agent Plugin
 
-Posthog useragent plugin.
+Enhances events to include the browser details when the event has a property `$useragent`
+which allows off loading retrieving/parsing user agent strings at event ingest.
 
-## Setup via PostHog
+It's used to easily pass the `User-Agent` HTTP header from incoming requests and let
+this plugin handle parsing it.
 
-1. Find the "plugins" page in PostHog
-2. Either select the plugin from the list or copy the URL of this repository to install
+## Installation
 
-## Setup via CLI
-
-1. Install [posthog-cli](https://github.com/PostHog/posthog-cli)
-2. Install this plugin: `posthog plugin install useragentplugin`
-3. Either use the plugins interface or edit `posthog.json` and add the required config variables:
-
-```json
-{
-    "name": "useragentplugin",
-    "url": "https://github.com/weyert/useragentplugin",
-    "global": {
-        "enabled": true,
-        "config": {
-            "bar": "foo"
-        }
-    }
-}
-```
-
-4. Run PostHog
+1. Visit 'Project Plugins' under 'Settings'
+1. Enable plugins if you haven't already done so
+1. Click the 'Available' tab next to 'Installed'
+1. Click 'Install' on this plugin
