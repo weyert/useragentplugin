@@ -1,6 +1,6 @@
 {
     "name": "useragent-plugin",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Automatically attach detailed browser details to the event when $useragent property exists",
     "main": "dist/index.js",
     "files": [
@@ -14,7 +14,8 @@
         "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "Weyert de Boer",
+    "repository": "https://github.com/weyert/useragentplugin",
     "license": "ISC",
     "devDependencies": {
         "@posthog/plugin-scaffold": "^0.2.7",
