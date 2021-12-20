@@ -3,12 +3,17 @@
     "url": "https://github.com/weyert/useragent-plugin",
     "description": "Enhances events with user agent details",
     "main": "dist/index.js",
-    "config": {
-        "overrideUserAgentDetails": {
+    "config": [
+        {
+            "markdown": "User Agent plugin allows you to populate events with the $browser, $browser_version for PostHog Clients that don't  typically populate these properties"
+        },
+        {
+            "key": "overrideUserAgentDetails",
             "name": "Can override existing browser related properties of event?",
             "type": "string",
+            "hint": "If the ingested event already have $browser $browser_version properties in combination with $useragent the $browser, $browser_version properties will be re-populated with the value of $useragent",
             "default": "false",
             "required": false
         }
-    }
+    ]
 }
