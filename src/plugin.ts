@@ -24,7 +24,8 @@ interface PluginEventExtra extends PluginEvent {
  */
 export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
-        global.enabledPlugin = config.enable === 'true'
+        console.log(`UserAgentPlugin.setupPlugin() config:`, JSON.stringify(config, null, 2))
+
         global.overrideUserAgentDetails = config.overrideUserAgentDetails === 'true'
     } catch (e: unknown) {
         throw new Error('Failed to read the configuration')
@@ -35,25 +36,25 @@ export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
  * Process the event
  */
 export async function processEvent(event: PluginEventExtra, { global }: Meta<UserAgentMetaInput>) {
-    // If the plugin is not enable, we skip the processing of the event
-    if (!global.enabledPlugin) {
-        console.warn('The useragent-plugin is not enabed.')
-        return event
-    }
+    const availableKeysOfEvent = Object.keys(event.properties)
 
     // If the magical property name $useragent is missing, we skip the processing of the event
-    if (!event.properties.hasOwnProperty('$useragent')) {
-        console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent`)
+    const hasUserAgentKey = availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent')
+    if (!hasUserAgentKey) {
+        console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
         return event
     }
 
     // Extrat user agent from event properties
-    const userAgent = `${event.properties.$useragent}`
+    const userAgent = `${event.properties.$useragent ?? event.properties['$user-agent']}`
+    console.log(`UserAgentPlugin.processEvent(): Received user agent:`, userAgent)
 
-    // Remove the unnecessary $useragent user property
+    // Remove the unnecessary $useragent or $user-agent user property
     delete event.properties.$useragent
+    delete event.properties['$user-agent']
 
     if (!userAgent || userAgent === '') {
+        console.warn(`UserAgentPlugin.processEvent(): $useragent is empty`)
         return event
     }
 
@@ -65,6 +66,9 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     )
 
     if (!global.overrideUserAgentDetails && hasBrowserProperties) {
+        console.warn(
+            `UserAgentPlugin.processEvent(): The event has $browser, $browser_version or $os but the option 'overrideUserAgentDetails' is not enabled.`
+        )
         return event
     }
 
