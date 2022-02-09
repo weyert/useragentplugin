@@ -24,8 +24,6 @@ interface PluginEventExtra extends PluginEvent {
  */
 export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
-        console.log(`UserAgentPlugin.setupPlugin() config:`, JSON.stringify(config, null, 2))
-
         global.overrideUserAgentDetails = config.overrideUserAgentDetails === 'true'
     } catch (e: unknown) {
         throw new Error('Failed to read the configuration')
@@ -47,7 +45,6 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
 
     // Extrat user agent from event properties
     const userAgent = `${event.properties.$useragent ?? event.properties['$user-agent']}`
-    console.log(`UserAgentPlugin.processEvent(): Received user agent:`, userAgent)
 
     // Remove the unnecessary $useragent or $user-agent user property
     delete event.properties.$useragent
