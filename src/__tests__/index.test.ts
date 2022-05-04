@@ -16,9 +16,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: true,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'true' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -40,9 +41,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: true,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'true' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -65,9 +67,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: true,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'true' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -91,9 +94,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: true,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'true' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -126,9 +130,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: true,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'true' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -171,9 +176,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: false,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'false' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'false' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -212,9 +218,10 @@ describe('useragent-plugin', () => {
             storage: {} as StorageExtension,
             global: {
                 enabledPlugin: true,
+                enableSegmentAnalyticsJs: false,
                 overrideUserAgentDetails: false,
             },
-            config: { enable: 'true', overrideUserAgentDetails: 'false' },
+            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'false' },
             attachments: {},
             jobs: {},
             metrics: {},
@@ -228,5 +235,45 @@ describe('useragent-plugin', () => {
                 $os: 'macos',
             })
         )
+    })
+
+    describe('enableSegmentAnalyticsJs is true', () => {
+        test('should add user agent details when segment_userAgent property exists', async () => {
+            const event = {
+                properties: {
+                    segment_userAgent:
+                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
+                    $lib: 'posthog-node',
+                },
+            } as unknown as PluginEvent
+
+            const processedEvent = await processEvent(event, {
+                cache: {} as CacheExtension,
+                storage: {} as StorageExtension,
+                global: {
+                    enabledPlugin: true,
+                    enableSegmentAnalyticsJs: true,
+                    overrideUserAgentDetails: true,
+                },
+                config: { enable: 'true', enableSegmentAnalyticsJs: 'true', overrideUserAgentDetails: 'true' },
+                attachments: {},
+                jobs: {},
+                metrics: {},
+                geoip: {} as GeoIPExtension,
+                utils: {} as UtilsExtension,
+            })
+            expect(Object.keys(processedEvent.properties)).toEqual(
+                expect.arrayContaining(['$lib', '$browser', '$browser_version', '$os', '$browser_type'])
+            )
+            expect(processedEvent.properties).toStrictEqual(
+                expect.objectContaining({
+                    $browser: 'safari',
+                    $browser_version: '14.0.0',
+                    $os: 'Mac OS',
+                    segment_userAgent:
+                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
+                })
+            )
+        })
     })
 })

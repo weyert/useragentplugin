@@ -3,6 +3,7 @@ import { PluginEvent, Meta } from '@posthog/plugin-scaffold'
 
 export type UserAgentPluginConfiguration = {
     enable: string
+    enableSegmentAnalyticsJs?: string
     overrideUserAgentDetails?: string
 }
 
@@ -10,6 +11,7 @@ export type UserAgentMetaInput = {
     config: UserAgentPluginConfiguration
     global: {
         enabledPlugin: boolean
+        enableSegmentAnalyticsJs: boolean
         overrideUserAgentDetails: boolean
     }
 }
@@ -24,6 +26,7 @@ interface PluginEventExtra extends PluginEvent {
  */
 export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
+        global.enableSegmentAnalyticsJs = config.enableSegmentAnalyticsJs === 'true'
         global.overrideUserAgentDetails = config.overrideUserAgentDetails === 'true'
     } catch (e: unknown) {
         throw new Error('Failed to read the configuration')
@@ -36,19 +39,34 @@ export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
 export async function processEvent(event: PluginEventExtra, { global }: Meta<UserAgentMetaInput>) {
     const availableKeysOfEvent = Object.keys(event.properties)
 
-    // If the magical property name $useragent is missing, we skip the processing of the event
-    const hasUserAgentKey = availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent')
-    if (!hasUserAgentKey) {
-        console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
-        return event
+    let userAgent = ''
+
+    if (global.enableSegmentAnalyticsJs) {
+        // If the segment integration is enabled and the segment_userAgent is missing, we skip the processing of the event
+        const hasSegmentUserAgentKey = availableKeysOfEvent.includes('segment_userAgent')
+        if (!hasSegmentUserAgentKey) {
+            console.warn(`UserAgentPlugin.processEvent(): Event is missing segment_userAgent`)
+            return event
+        }
+
+        // Extract user agent from event properties
+        userAgent = `${event.properties.segment_userAgent}`
+    } else {
+        // If the magical property name $useragent is missing, we skip the processing of the event
+        const hasUserAgentKey =
+            availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent')
+        if (!hasUserAgentKey) {
+            console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
+            return event
+        }
+
+        // Extract user agent from event properties
+        userAgent = `${event.properties.$useragent ?? event.properties['$user-agent']}`
+
+        // Remove the unnecessary $useragent or $user-agent user property
+        delete event.properties.$useragent
+        delete event.properties['$user-agent']
     }
-
-    // Extrat user agent from event properties
-    const userAgent = `${event.properties.$useragent ?? event.properties['$user-agent']}`
-
-    // Remove the unnecessary $useragent or $user-agent user property
-    delete event.properties.$useragent
-    delete event.properties['$user-agent']
 
     if (!userAgent || userAgent === '') {
         console.warn(`UserAgentPlugin.processEvent(): $useragent is empty`)
