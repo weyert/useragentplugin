@@ -54,18 +54,25 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     } else {
         // If the magical property name $useragent is missing, we skip the processing of the event
         const hasUserAgentKey =
-            availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent')
+            availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent') || availableKeysOfEvent.includes('$user_agent')
         if (!hasUserAgentKey) {
             console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
             return event
         }
 
         // Extract user agent from event properties
-        userAgent = `${event.properties.$useragent ?? event.properties['$user-agent']}`
+        if (event.properties.$useragent) {
+            userAgent = event.properties.$useragent
+        } else if (event.properties['$user-agent']) {
+            userAgent = event.properties['$user-agent']
+        } else if (event.properties.$user_agent) {
+            userAgent = event.properties.$user_agent
+        }
 
         // Remove the unnecessary $useragent or $user-agent user property
         delete event.properties.$useragent
         delete event.properties['$user-agent']
+        delete event.properties.$user_agent
     }
 
     if (!userAgent || userAgent === '') {
