@@ -14,6 +14,15 @@
             "hint": "If the ingested event already have $browser $browser_version properties in combination with $useragent the $browser, $browser_version properties will be re-populated with the value of $useragent",
             "default": "false",
             "required": false
+        },
+        {
+            "key": "enableSegmentAnalyticsJs",
+            "name": "Automatically read segment_userAgent property, automatically sent by Segment via analytics.js?",
+            "type": "choice",
+            "hint": "Segment's analytics.js library automatically sends a useragent property that Posthog sees as segment_userAgent. Enabling this causes this plugin to parse that property",
+            "choices": ["false", "true"],
+            "default": "false",
+            "required": false
         }
     ]
 }
