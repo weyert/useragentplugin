@@ -101,7 +101,15 @@ describe('useragent-plugin', () => {
             utils: {} as UtilsExtension,
         })
         expect(Object.keys(processedEvent.properties)).toEqual(
-            expect.arrayContaining(['$lib', '$browser', '$browser_version', '$os', '$browser_type'])
+            expect.arrayContaining([
+                '$lib',
+                '$browser',
+                '$browser_version',
+                '$os',
+                '$device',
+                '$device_type',
+                '$browser_type',
+            ])
         )
         expect(processedEvent.properties).toStrictEqual(
             expect.objectContaining({
@@ -136,13 +144,23 @@ describe('useragent-plugin', () => {
             utils: {} as UtilsExtension,
         })
         expect(Object.keys(processedEvent.properties)).toEqual(
-            expect.arrayContaining(['$lib', '$browser', '$browser_version', '$os', '$browser_type'])
+            expect.arrayContaining([
+                '$lib',
+                '$browser',
+                '$browser_version',
+                '$os',
+                '$device',
+                '$device_type',
+                '$browser_type',
+            ])
         )
         expect(processedEvent.properties).toStrictEqual(
             expect.objectContaining({
                 $browser: 'safari',
                 $browser_version: '14.0.0',
                 $os: 'Mac OS',
+                $device: '',
+                $device_type: 'Desktop',
             })
         )
     })
@@ -182,7 +200,7 @@ describe('useragent-plugin', () => {
         })
 
         expect(Object.keys(processedEvent.properties)).toEqual(
-            expect.arrayContaining(['$browser', '$browser_version', '$os', '$browser_type'])
+            expect.arrayContaining(['$browser', '$browser_version', '$os', '$device', '$device_type', '$browser_type'])
         )
 
         console.log(processedEvent.properties)
@@ -192,6 +210,59 @@ describe('useragent-plugin', () => {
                 $browser: 'edge-chromium',
                 $browser_version: '96.0.1054',
                 $os: 'Mac OS',
+                $device: '',
+                $device_type: 'Desktop',
+            })
+        )
+    })
+
+    test('should return correct browser properties for an iPhone useragent', async () => {
+        const event = {
+            id: '017dc2cb-9fe0-0000-ceed-5ef8e328261d',
+            timestamp: '2021-12-16T10:31:04.234000+00:00',
+            event: 'check',
+            distinct_id: '91786645996505845983216505144491686624250709556909346823253562854100595129050',
+            properties: {
+                $ip: '31.164.196.102',
+                $lib: 'posthog-python',
+                $lib_version: '1.4.4',
+                $plugins_deferred: [],
+                $plugins_failed: [],
+                $plugins_succeeded: ['GeoIP (3347)', 'useragentplugin (3348)'],
+                $useragent:
+                    'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1',
+            },
+            elements_chain: '',
+        } as unknown as PluginEvent
+
+        const processedEvent = await processEvent(event, {
+            cache: {} as CacheExtension,
+            storage: {} as StorageExtension,
+            global: {
+                enabledPlugin: true,
+                overrideUserAgentDetails: false,
+            },
+            config: { enable: 'true', overrideUserAgentDetails: 'false' },
+            attachments: {},
+            jobs: {},
+            metrics: {},
+            geoip: {} as GeoIPExtension,
+            utils: {} as UtilsExtension,
+        })
+
+        expect(Object.keys(processedEvent.properties)).toEqual(
+            expect.arrayContaining(['$browser', '$browser_version', '$os', '$device', '$device_type', '$browser_type'])
+        )
+
+        console.log(processedEvent.properties)
+
+        expect(processedEvent.properties).toStrictEqual(
+            expect.objectContaining({
+                $browser: 'ios',
+                $browser_version: '15.4.0',
+                $os: 'iOS',
+                $device: 'iPhone',
+                $device_type: 'Mobile',
             })
         )
     })
@@ -202,6 +273,8 @@ describe('useragent-plugin', () => {
                 $browser: 'safari',
                 $browser_version: '14.0',
                 $os: 'macos',
+                $device: '',
+                $device_type: 'Desktop',
                 $useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:82.0) Gecko/20100101 Firefox/82.0',
                 $lib: 'posthog-node',
             },
@@ -226,6 +299,8 @@ describe('useragent-plugin', () => {
                 $browser: 'safari',
                 $browser_version: '14.0',
                 $os: 'macos',
+                $device: '',
+                $device_type: 'Desktop',
             })
         )
     })
