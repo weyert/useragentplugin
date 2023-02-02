@@ -5,6 +5,7 @@ export type UserAgentPluginConfiguration = {
     enable: string
     enableSegmentAnalyticsJs?: string
     overrideUserAgentDetails?: string
+    debugMode?: string
 }
 
 export type UserAgentMetaInput = {
@@ -13,6 +14,7 @@ export type UserAgentMetaInput = {
         enabledPlugin: boolean
         enableSegmentAnalyticsJs: boolean
         overrideUserAgentDetails: boolean
+        debugMode: boolean
     }
 }
 
@@ -28,6 +30,7 @@ export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
         global.enableSegmentAnalyticsJs = config.enableSegmentAnalyticsJs === 'true'
         global.overrideUserAgentDetails = config.overrideUserAgentDetails === 'true'
+        global.debugMode = config.debugMode === 'true'
     } catch (e: unknown) {
         throw new Error('Failed to read the configuration')
     }
@@ -45,7 +48,10 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
         // If the segment integration is enabled and the segment_userAgent is missing, we skip the processing of the event
         const hasSegmentUserAgentKey = availableKeysOfEvent.includes('segment_userAgent')
         if (!hasSegmentUserAgentKey) {
-            console.warn(`UserAgentPlugin.processEvent(): Event is missing segment_userAgent`)
+            if (global.debugMode) {
+                console.warn(`UserAgentPlugin.processEvent(): Event is missing segment_userAgent`)
+            }
+
             return event
         }
 
@@ -56,7 +62,10 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
         const hasUserAgentKey =
             availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent') || availableKeysOfEvent.includes('$user_agent')
         if (!hasUserAgentKey) {
-            console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
+            if (global.debugMode) {
+                console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
+            }
+
             return event
         }
 
@@ -76,7 +85,10 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     }
 
     if (!userAgent || userAgent === '') {
-        console.warn(`UserAgentPlugin.processEvent(): $useragent is empty`)
+        if (global.debugMode) {
+            console.warn(`UserAgentPlugin.processEvent(): $useragent is empty`)
+        }
+
         return event
     }
 
@@ -90,9 +102,12 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     )
 
     if (!global.overrideUserAgentDetails && hasBrowserProperties) {
-        console.warn(
-            `UserAgentPlugin.processEvent(): The event has $browser, $browser_version, $os, $device, or $device_type but the option 'overrideUserAgentDetails' is not enabled.`
-        )
+        if (global.debugMode) {
+            console.warn(
+                `UserAgentPlugin.processEvent(): The event has $browser, $browser_version, $os, $device, or $device_type but the option 'overrideUserAgentDetails' is not enabled.`
+            )
+        }
+
         return event
     }
 

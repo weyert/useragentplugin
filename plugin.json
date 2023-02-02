@@ -23,6 +23,14 @@
             "choices": ["false", "true"],
             "default": "false",
             "required": false
+        },
+        {
+            "key": "debugMode",
+            "type": "choice",
+            "hint": "Enable debug mode to log when the plugin is unable to extract values from the user agent",
+            "choices": ["false", "true"],
+            "default": "false",
+            "required": false
         }
     ]
 }
