@@ -11,7 +11,8 @@
     ],
     "scripts": {
         "test": "jest",
-        "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js"
+        "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js",
+        "prepublishOnly": "npm run build"
     },
     "keywords": [
         "posthog",
