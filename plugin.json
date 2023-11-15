@@ -2,7 +2,7 @@
     "name": "User Agent Populator",
     "url": "https://github.com/weyert/useragent-plugin",
     "description": "Enhances events with user agent details",
-    "main": "dist/index.js",
+    "main": "src/plugin.ts",
     "config": [
         {
             "markdown": "User Agent plugin allows you to populate events with the $browser, $browser_version for PostHog Clients that don't  typically populate these properties"
