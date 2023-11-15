@@ -113,13 +113,16 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
 
     // The special Posthog property names are retrieved from:
     // https://github.com/PostHog/posthog/blob/master/frontend/src/lib/components/PropertyKeyInfo.tsx
-    event.properties['$browser'] = agentInfo.name
-    event.properties['$browser_version'] = agentInfo.version
-    event.properties['$os'] = agentInfo.os
     event.properties['$device'] = device
     event.properties['$device_type'] = deviceType
-    // Custom
-    event.properties['$browser_type'] = agentInfo.type
+
+    if (agentInfo) {
+        event.properties['$browser'] = agentInfo.name
+        event.properties['$browser_version'] = agentInfo.version
+        event.properties['$os'] = agentInfo.os
+        // Custom property
+        event.properties['$browser_type'] = agentInfo.type
+    }
 
     return event
 }
