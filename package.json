@@ -1,6 +1,6 @@
 {
   "name": "useragent-plugin",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Automatically attach detailed browser details to the event when $useragent property exists",
   "main": "dist/index.js",
   "files": [
