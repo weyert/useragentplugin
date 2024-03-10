@@ -1,6 +1,6 @@
 {
     "name": "User Agent Populator",
-    "url": "https://github.com/weyert/useragent-plugin",
+    "url": "https://github.com/posthog/useragent-plugin",
     "description": "Enhances events with user agent details",
     "main": "dist/index.js",
     "config": [

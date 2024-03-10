@@ -21,8 +21,8 @@
     "event ingestion",
     "user agent"
   ],
-  "author": "Weyert de Boer",
-  "repository": "https://github.com/weyert/useragentplugin",
+  "author": "PostHog (forked from Weyert de Boer)",
+  "repository": "https://github.com/posthog/useragentplugin",
   "license": "MIT",
   "devDependencies": {
     "@posthog/plugin-scaffold": "^0.12.10",
