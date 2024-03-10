@@ -1,31 +1,45 @@
 import {
     CacheExtension,
     GeoIPExtension,
+    Meta,
     PluginEvent,
-    PluginMeta,
     StorageExtension,
     UtilsExtension,
 } from '@posthog/plugin-scaffold'
-import { processEvent } from '../plugin'
+import { processEvent, UserAgentMetaInput } from '../plugin'
+
+function makeMeta(options?: {
+    enable?: boolean
+    enableSegmentAnalyticsJs?: boolean
+    overrideUserAgentDetails?: boolean
+    debugMode?: boolean
+}): Meta<UserAgentMetaInput> {
+    return {
+        cache: {} as CacheExtension,
+        storage: {} as StorageExtension,
+        global: {
+            enabledPlugin: options?.enable ?? true,
+            enableSegmentAnalyticsJs: options?.enableSegmentAnalyticsJs ?? false,
+            overrideUserAgentDetails: options?.overrideUserAgentDetails ?? true,
+            debugMode: options?.debugMode ?? false,
+        },
+        config: {
+            enable: options?.enable ? 'true' : 'false',
+            enableSegmentAnalyticsJs: options?.enableSegmentAnalyticsJs ? 'true' : 'false',
+            overrideUserAgentDetails: options?.overrideUserAgentDetails ? 'true' : 'false',
+        },
+        attachments: {},
+        jobs: {},
+        metrics: {},
+        geoip: {} as GeoIPExtension,
+        utils: {} as UtilsExtension,
+    }
+}
 
 describe('useragent-plugin', () => {
     test('should not process event when disabled', async () => {
         const event = { properties: {} }
-        const processedEvent = await processEvent(event as any, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: true,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event as any, makeMeta())
         expect(Object.keys(processedEvent.properties)).toStrictEqual(Object.keys(event.properties))
     })
 
@@ -36,21 +50,7 @@ describe('useragent-plugin', () => {
             },
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: true,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta())
         expect(Object.keys(processedEvent.properties)).toStrictEqual(['$lib'])
     })
 
@@ -62,21 +62,7 @@ describe('useragent-plugin', () => {
             },
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: true,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta())
         expect(Object.keys(processedEvent.properties)).toStrictEqual(['$lib'])
     })
 
@@ -89,21 +75,7 @@ describe('useragent-plugin', () => {
             },
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: true,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta())
         expect(Object.keys(processedEvent.properties)).toEqual(
             expect.arrayContaining([
                 '$lib',
@@ -133,21 +105,7 @@ describe('useragent-plugin', () => {
             },
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: true,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta())
         expect(Object.keys(processedEvent.properties)).toEqual(
             expect.arrayContaining([
                 '$lib',
@@ -179,21 +137,7 @@ describe('useragent-plugin', () => {
             },
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: true,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'true' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta())
         expect(Object.keys(processedEvent.properties)).toEqual(
             expect.arrayContaining([
                 '$lib',
@@ -235,21 +179,7 @@ describe('useragent-plugin', () => {
             elements_chain: '',
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: false,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'false' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta({ overrideUserAgentDetails: false }))
 
         expect(Object.keys(processedEvent.properties)).toEqual(
             expect.arrayContaining(['$browser', '$browser_version', '$os', '$device', '$device_type', '$browser_type'])
@@ -287,20 +217,7 @@ describe('useragent-plugin', () => {
             elements_chain: '',
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                overrideUserAgentDetails: false,
-            },
-            config: { enable: 'true', overrideUserAgentDetails: 'false' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta({ overrideUserAgentDetails: false }))
 
         expect(Object.keys(processedEvent.properties)).toEqual(
             expect.arrayContaining(['$browser', '$browser_version', '$os', '$device', '$device_type', '$browser_type'])
@@ -332,21 +249,7 @@ describe('useragent-plugin', () => {
             },
         } as unknown as PluginEvent
 
-        const processedEvent = await processEvent(event, {
-            cache: {} as CacheExtension,
-            storage: {} as StorageExtension,
-            global: {
-                enabledPlugin: true,
-                enableSegmentAnalyticsJs: false,
-                overrideUserAgentDetails: false,
-            },
-            config: { enable: 'true', enableSegmentAnalyticsJs: 'false', overrideUserAgentDetails: 'false' },
-            attachments: {},
-            jobs: {},
-            metrics: {},
-            geoip: {} as GeoIPExtension,
-            utils: {} as UtilsExtension,
-        })
+        const processedEvent = await processEvent(event, makeMeta({ overrideUserAgentDetails: false }))
         expect(processedEvent.properties).toStrictEqual(
             expect.objectContaining({
                 $browser: 'safari',
@@ -368,21 +271,7 @@ describe('useragent-plugin', () => {
                 },
             } as unknown as PluginEvent
 
-            const processedEvent = await processEvent(event, {
-                cache: {} as CacheExtension,
-                storage: {} as StorageExtension,
-                global: {
-                    enabledPlugin: true,
-                    enableSegmentAnalyticsJs: true,
-                    overrideUserAgentDetails: true,
-                },
-                config: { enable: 'true', enableSegmentAnalyticsJs: 'true', overrideUserAgentDetails: 'true' },
-                attachments: {},
-                jobs: {},
-                metrics: {},
-                geoip: {} as GeoIPExtension,
-                utils: {} as UtilsExtension,
-            })
+            const processedEvent = await processEvent(event, makeMeta({ enableSegmentAnalyticsJs: true }))
             expect(Object.keys(processedEvent.properties)).toEqual(
                 expect.arrayContaining(['$lib', '$browser', '$browser_version', '$os', '$browser_type'])
             )
