@@ -173,7 +173,7 @@ describe('useragent-plugin', () => {
     test('should add user agent details when $user_agent property exists', async () => {
         const event = {
             properties: {
-                '$user_agent':
+                $user_agent:
                     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
                 $lib: 'posthog-node',
             },
@@ -215,7 +215,6 @@ describe('useragent-plugin', () => {
             })
         )
     })
-
 
     test('should return correct browser properties for given $browser property', async () => {
         const event = {

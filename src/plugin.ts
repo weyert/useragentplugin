@@ -60,7 +60,9 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     } else {
         // If the magical property name $useragent is missing, we skip the processing of the event
         const hasUserAgentKey =
-            availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent') || availableKeysOfEvent.includes('$user_agent')
+            availableKeysOfEvent.includes('$user-agent') ||
+            availableKeysOfEvent.includes('$useragent') ||
+            availableKeysOfEvent.includes('$user_agent')
         if (!hasUserAgentKey) {
             if (global.debugMode) {
                 console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
