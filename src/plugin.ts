@@ -24,7 +24,7 @@ interface PluginEventExtra extends PluginEvent {
 
 /**
  * Setup of the plugin
- * @param param0 the meta data of the plugin
+ * @param param0 the metadata of the plugin
  */
 export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
@@ -128,7 +128,7 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
 }
 
 // detectDevice and detectDeviceType from https://github.com/PostHog/posthog-js/blob/9abedce5ac877caeb09205c4b693988fc09a63ca/src/utils.js#L808-L837
-function detectDevice(userAgent) {
+function detectDevice(userAgent: string) {
     if (/Windows Phone/i.test(userAgent) || /WPDesktop/.test(userAgent)) {
         return 'Windows Phone'
     } else if (/iPad/.test(userAgent)) {
@@ -148,7 +148,7 @@ function detectDevice(userAgent) {
     }
 }
 
-function detectDeviceType(userAgent) {
+function detectDeviceType(userAgent: string) {
     const device = detectDevice(userAgent)
     if (device === 'iPad' || device === 'Android Tablet') {
         return 'Tablet'
