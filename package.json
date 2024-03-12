@@ -11,7 +11,7 @@
     ],
     "scripts": {
         "test": "jest",
-        "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js",
+        "build": "rm -rf dist && npx swc src/plugin.ts -o dist/index.js --config-file .swcrc",
         "prepublishOnly": "npm run build",
         "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\""
     },
@@ -27,9 +27,10 @@
     "license": "MIT",
     "devDependencies": {
         "@posthog/plugin-scaffold": "^0.12.10",
+        "@swc/cli": "^0.3.10",
+        "@swc/core": "^1.4.6",
+        "@swc/jest": "^0.2.36",
         "@types/jest": "^27.0.3",
-        "esbuild": "^0.20.1",
-        "esbuild-jest": "^0.5.0",
         "husky": "^9.0.11",
         "jest": "^27.4.5",
         "lint-staged": "^15.2.2",
