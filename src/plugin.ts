@@ -24,7 +24,7 @@ interface PluginEventExtra extends PluginEvent {
 
 /**
  * Setup of the plugin
- * @param param0 the meta data of the plugin
+ * @param param0 the metadata of the plugin
  */
 export function setupPlugin({ config, global }: Meta<UserAgentMetaInput>) {
     try {
@@ -60,7 +60,9 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
     } else {
         // If the magical property name $useragent is missing, we skip the processing of the event
         const hasUserAgentKey =
-            availableKeysOfEvent.includes('$user-agent') || availableKeysOfEvent.includes('$useragent') || availableKeysOfEvent.includes('$user_agent')
+            availableKeysOfEvent.includes('$user-agent') ||
+            availableKeysOfEvent.includes('$useragent') ||
+            availableKeysOfEvent.includes('$user_agent')
         if (!hasUserAgentKey) {
             if (global.debugMode) {
                 console.warn(`UserAgentPlugin.processEvent(): Event is missing $useragent or $user-agent`)
@@ -128,7 +130,7 @@ export async function processEvent(event: PluginEventExtra, { global }: Meta<Use
 }
 
 // detectDevice and detectDeviceType from https://github.com/PostHog/posthog-js/blob/9abedce5ac877caeb09205c4b693988fc09a63ca/src/utils.js#L808-L837
-function detectDevice(userAgent) {
+function detectDevice(userAgent: string) {
     if (/Windows Phone/i.test(userAgent) || /WPDesktop/.test(userAgent)) {
         return 'Windows Phone'
     } else if (/iPad/.test(userAgent)) {
@@ -148,7 +150,7 @@ function detectDevice(userAgent) {
     }
 }
 
-function detectDeviceType(userAgent) {
+function detectDeviceType(userAgent: string) {
     const device = detectDevice(userAgent)
     if (device === 'iPad' || device === 'Android Tablet') {
         return 'Tablet'

@@ -4,7 +4,6 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
@@ -12,28 +11,29 @@ var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
-var __reExport = (target, module2, copyDefault, desc) => {
-  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
-    for (let key of __getOwnPropNames(module2))
-      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
-        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-  return target;
+  return to;
 };
-var __toESM = (module2, isNodeMode) => {
-  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
-};
-var __toCommonJS = /* @__PURE__ */ ((cache) => {
-  return (module2, temp) => {
-    return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
-  };
-})(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/detect-browser/index.js
 var require_detect_browser = __commonJS({
-  "node_modules/detect-browser/index.js"(exports) {
+  "node_modules/detect-browser/index.js"(exports2) {
     "use strict";
-    var __spreadArray = exports && exports.__spreadArray || function(to, from, pack) {
+    var __spreadArray = exports2 && exports2.__spreadArray || function(to, from, pack) {
       if (pack || arguments.length === 2)
         for (var i = 0, l = from.length, ar; i < l; i++) {
           if (ar || !(i in from)) {
@@ -44,60 +44,75 @@ var require_detect_browser = __commonJS({
         }
       return to.concat(ar || Array.prototype.slice.call(from));
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getNodeVersion = exports.detectOS = exports.parseUserAgent = exports.browserName = exports.detect = exports.ReactNativeInfo = exports.BotInfo = exports.SearchBotDeviceInfo = exports.NodeInfo = exports.BrowserInfo = void 0;
-    var BrowserInfo = function() {
-      function BrowserInfo2(name, version, os) {
-        this.name = name;
-        this.version = version;
-        this.os = os;
-        this.type = "browser";
-      }
-      return BrowserInfo2;
-    }();
-    exports.BrowserInfo = BrowserInfo;
-    var NodeInfo = function() {
-      function NodeInfo2(version) {
-        this.version = version;
-        this.type = "node";
-        this.name = "node";
-        this.os = process.platform;
-      }
-      return NodeInfo2;
-    }();
-    exports.NodeInfo = NodeInfo;
-    var SearchBotDeviceInfo = function() {
-      function SearchBotDeviceInfo2(name, version, os, bot) {
-        this.name = name;
-        this.version = version;
-        this.os = os;
-        this.bot = bot;
-        this.type = "bot-device";
-      }
-      return SearchBotDeviceInfo2;
-    }();
-    exports.SearchBotDeviceInfo = SearchBotDeviceInfo;
-    var BotInfo = function() {
-      function BotInfo2() {
-        this.type = "bot";
-        this.bot = true;
-        this.name = "bot";
-        this.version = null;
-        this.os = null;
-      }
-      return BotInfo2;
-    }();
-    exports.BotInfo = BotInfo;
-    var ReactNativeInfo = function() {
-      function ReactNativeInfo2() {
-        this.type = "react-native";
-        this.name = "react-native";
-        this.version = null;
-        this.os = null;
-      }
-      return ReactNativeInfo2;
-    }();
-    exports.ReactNativeInfo = ReactNativeInfo;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getNodeVersion = exports2.detectOS = exports2.parseUserAgent = exports2.browserName = exports2.detect = exports2.ReactNativeInfo = exports2.BotInfo = exports2.SearchBotDeviceInfo = exports2.NodeInfo = exports2.BrowserInfo = void 0;
+    var BrowserInfo = (
+      /** @class */
+      /* @__PURE__ */ function() {
+        function BrowserInfo2(name, version, os) {
+          this.name = name;
+          this.version = version;
+          this.os = os;
+          this.type = "browser";
+        }
+        return BrowserInfo2;
+      }()
+    );
+    exports2.BrowserInfo = BrowserInfo;
+    var NodeInfo = (
+      /** @class */
+      /* @__PURE__ */ function() {
+        function NodeInfo2(version) {
+          this.version = version;
+          this.type = "node";
+          this.name = "node";
+          this.os = process.platform;
+        }
+        return NodeInfo2;
+      }()
+    );
+    exports2.NodeInfo = NodeInfo;
+    var SearchBotDeviceInfo = (
+      /** @class */
+      /* @__PURE__ */ function() {
+        function SearchBotDeviceInfo2(name, version, os, bot) {
+          this.name = name;
+          this.version = version;
+          this.os = os;
+          this.bot = bot;
+          this.type = "bot-device";
+        }
+        return SearchBotDeviceInfo2;
+      }()
+    );
+    exports2.SearchBotDeviceInfo = SearchBotDeviceInfo;
+    var BotInfo = (
+      /** @class */
+      /* @__PURE__ */ function() {
+        function BotInfo2() {
+          this.type = "bot";
+          this.bot = true;
+          this.name = "bot";
+          this.version = null;
+          this.os = null;
+        }
+        return BotInfo2;
+      }()
+    );
+    exports2.BotInfo = BotInfo;
+    var ReactNativeInfo = (
+      /** @class */
+      /* @__PURE__ */ function() {
+        function ReactNativeInfo2() {
+          this.type = "react-native";
+          this.name = "react-native";
+          this.version = null;
+          this.os = null;
+        }
+        return ReactNativeInfo2;
+      }()
+    );
+    exports2.ReactNativeInfo = ReactNativeInfo;
     var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
     var SEARCHBOT_OS_REGEX = /(nuhk|curl|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
     var REQUIRED_VERSION_PARTS = 3;
@@ -181,7 +196,7 @@ var require_detect_browser = __commonJS({
       }
       return getNodeVersion();
     }
-    exports.detect = detect2;
+    exports2.detect = detect2;
     function matchUserAgent(ua) {
       return ua !== "" && userAgentRules.reduce(function(matched, _a) {
         var browser = _a[0], regex = _a[1];
@@ -196,7 +211,7 @@ var require_detect_browser = __commonJS({
       var data = matchUserAgent(ua);
       return data ? data[0] : null;
     }
-    exports.browserName = browserName;
+    exports2.browserName = browserName;
     function parseUserAgent(ua) {
       var matchedRule = matchUserAgent(ua);
       if (!matchedRule) {
@@ -222,7 +237,7 @@ var require_detect_browser = __commonJS({
       }
       return new BrowserInfo(name, version, os);
     }
-    exports.parseUserAgent = parseUserAgent;
+    exports2.parseUserAgent = parseUserAgent;
     function detectOS(ua) {
       for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
         var _a = operatingSystemRules[ii], os = _a[0], regex = _a[1];
@@ -233,12 +248,12 @@ var require_detect_browser = __commonJS({
       }
       return null;
     }
-    exports.detectOS = detectOS;
+    exports2.detectOS = detectOS;
     function getNodeVersion() {
       var isNode = typeof process !== "undefined" && process.version;
       return isNode ? new NodeInfo(process.version.slice(1)) : null;
     }
-    exports.getNodeVersion = getNodeVersion;
+    exports2.getNodeVersion = getNodeVersion;
     function createVersionParts(count) {
       var output = [];
       for (var ii = 0; ii < count; ii++) {
@@ -255,6 +270,7 @@ __export(plugin_exports, {
   processEvent: () => processEvent,
   setupPlugin: () => setupPlugin
 });
+module.exports = __toCommonJS(plugin_exports);
 var import_detect_browser = __toESM(require_detect_browser());
 function setupPlugin({ config, global }) {
   try {
@@ -306,10 +322,14 @@ async function processEvent(event, { global }) {
   const device = detectDevice(userAgent);
   const deviceType = detectDeviceType(userAgent);
   const eventProperties = Object.keys(event.properties);
-  const hasBrowserProperties = eventProperties.some((value) => ["$browser", "$browser_version", "$os", "$device", "$device_type"].includes(value));
+  const hasBrowserProperties = eventProperties.some(
+    (value) => ["$browser", "$browser_version", "$os", "$device", "$device_type"].includes(value)
+  );
   if (!global.overrideUserAgentDetails && hasBrowserProperties) {
     if (global.debugMode) {
-      console.warn(`UserAgentPlugin.processEvent(): The event has $browser, $browser_version, $os, $device, or $device_type but the option 'overrideUserAgentDetails' is not enabled.`);
+      console.warn(
+        `UserAgentPlugin.processEvent(): The event has $browser, $browser_version, $os, $device, or $device_type but the option 'overrideUserAgentDetails' is not enabled.`
+      );
     }
     return event;
   }
@@ -352,7 +372,6 @@ function detectDeviceType(userAgent) {
     return "Desktop";
   }
 }
-module.exports = __toCommonJS(plugin_exports);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   processEvent,

@@ -15,6 +15,14 @@ this plugin handle parsing it.
 
 ## Updating
 
+### Automagically
+
+Husky is used to add the latest version of the built artefact whenever you commit.
+
+### Manually
+
 Run the build step locally and commit the artifact to the repo so that it can be used directly in PostHog:
 
+```
     npm i && npm run build && git add -f dist/
+```
