@@ -1,52 +1,49 @@
 {
-    "name": "useragent-plugin",
-    "version": "2.0.2",
-    "description": "Automatically attach detailed browser details to the event when $useragent property exists",
-    "main": "dist/index.js",
-    "files": [
-        "plugin.json",
-        "dist/index.js",
-        "README.md",
-        "LICENSE.md"
-    ],
-    "scripts": {
-        "test": "jest",
-        "build": "rm -rf dist && esbuild src/plugin.ts --bundle --platform=node --target=node10.4 --outfile=dist/index.js",
-        "prepublishOnly": "npm run build",
-        "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\""
-    },
-    "keywords": [
-        "posthog",
-        "plugin",
-        "browser",
-        "event ingestion",
-        "user agent"
-    ],
-    "author": "PostHog (forked from Weyert de Boer)",
-    "repository": "https://github.com/posthog/useragentplugin",
-    "license": "MIT",
-    "devDependencies": {
-        "@posthog/plugin-scaffold": "^0.12.10",
-        "@types/jest": "^27.0.3",
-        "esbuild": "^0.20.1",
-        "esbuild-jest": "^0.5.0",
-        "husky": "^9.0.11",
-        "jest": "^27.4.5",
-        "lint-staged": "^15.2.2",
-        "prettier": "^3.2.5",
-        "tslib": "^2.6.2"
-    },
-    "dependencies": {
-        "detect-browser": "^5.3.0"
-    },
-    "lint-staged": {
-        "src/**/*.{ts,tsx,js,json}": [
-            "format"
-        ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run build && git add -f dist"
-        }
-    }
+  "name": "useragent-plugin",
+  "version": "2.0.2",
+  "description": "Automatically attach detailed browser details to the event when $useragent property exists",
+  "main": "dist/index.js",
+  "files": [
+    "plugin.json",
+    "dist/index.js",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf dist && npx swc src/plugin.ts -o dist/index.js --config-file .swcrc",
+    "prepublishOnly": "npm run build",
+    "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\"",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "posthog",
+    "plugin",
+    "browser",
+    "event ingestion",
+    "user agent"
+  ],
+  "author": "PostHog (forked from Weyert de Boer)",
+  "repository": "https://github.com/posthog/useragentplugin",
+  "license": "MIT",
+  "devDependencies": {
+    "@posthog/plugin-scaffold": "^0.12.10",
+    "@swc/cli": "^0.3.10",
+    "@swc/core": "^1.4.6",
+    "@swc/jest": "^0.2.36",
+    "@types/jest": "^27.0.3",
+    "husky": "^9.0.11",
+    "jest": "^27.4.5",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "tslib": "^2.6.2"
+  },
+  "dependencies": {
+    "detect-browser": "^5.3.0"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,json}": [
+      "format"
+    ]
+  }
 }
